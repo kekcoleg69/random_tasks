@@ -70,10 +70,14 @@ export default function MainPage({
         <button
           className="addTaskButton"
           onClick={() => {
-            setActualTasks([...actualTasks, newTask]);
-            setAddedTasks([...addedTasks, newTask]);
-            setNewTask("");
-            setActiveModal(false);
+            if (newTask.trim().length === 0) {
+              alert("Ну-ка напиши что-нибудь");
+            } else {
+              setActualTasks([...actualTasks, newTask]);
+              setAddedTasks([...addedTasks, newTask]);
+              setNewTask("");
+              setActiveModal(false);
+            }
           }}
         >
           Добавить задание
