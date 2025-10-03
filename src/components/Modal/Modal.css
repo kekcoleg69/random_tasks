@@ -1,0 +1,41 @@
+.modal{
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.4);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 0;
+	pointer-events: none;
+	transition: 300ms;
+}
+
+.modal_content{
+	position: relative;
+	background-color: white;
+	width: 400px;
+	height: 200px;
+	border-radius: 12px;
+	padding: 10px;
+	transition: 300ms;
+}
+.active{
+	opacity: 1;
+	pointer-events: all;
+}
+.modal-close {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: red;
+	color: white;
+}
+.title{
+	font-size: 20px;
+	text-transform: uppercase;
+	font-weight: 700;
+	text-align: center;
+}
