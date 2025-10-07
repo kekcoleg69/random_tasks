@@ -4,9 +4,8 @@ let style = {
   fontSize: "30px",
   marginTop: "100px",
   padding: "30px",
-  backgroundColor: "red",
   borderRadius: "12px",
 };
 export default function Task({ children }) {
-  return <p style={style}>{children}</p>;
+  return <div style={style}>{children}</div>;
 }

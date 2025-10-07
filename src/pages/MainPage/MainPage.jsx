@@ -2,25 +2,31 @@ import React, { useEffect, useState } from "react";
 import Task from "../../components/Task";
 import Modal from "../../components/Modal/Modal";
 
+import { Checkbox } from "@mui/material";
+import Favorite from "@mui/icons-material/Favorite";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+
 export default function MainPage({
   actualTasks,
   setActualTasks,
-  newTask,
-  setNewTask,
+  textTask,
+  setTextTask,
   setAddedTasks,
   addedTasks,
   historyDisplayTasks,
   setHistoryDisplayTasks,
 }) {
   let [showTask, setShowTask] = useState("");
-
-  let task = "";
-
+  const [currentTask, setCurrentTask] = useState("");
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(actualTasks, newTask));
-    localStorage.setItem("addedTasks", JSON.stringify(addedTasks, newTask));
-    localStorage.setItem("history", JSON.stringify(historyDisplayTasks, task));
-  }, [actualTasks, historyDisplayTasks]);
+    localStorage.setItem("tasks", JSON.stringify(actualTasks));
+  }, [actualTasks]);
+  useEffect(() => {
+    localStorage.setItem("addedTasks", JSON.stringify(addedTasks));
+  }, [addedTasks]);
+  useEffect(() => {
+    localStorage.setItem("history", JSON.stringify(historyDisplayTasks));
+  }, [historyDisplayTasks]);
 
   function getRandomTask() {
     const randomIndex = Math.floor(Math.random() * actualTasks.length);
@@ -29,14 +35,44 @@ export default function MainPage({
   const [activeModal, setActiveModal] = useState(false);
   return (
     <div>
-      {showTask && <Task>{showTask}</Task>}
+      {showTask && (
+        <Task>
+          {showTask}
+          <Checkbox
+            icon={<FavoriteBorder />}
+            checkedIcon={<Favorite />}
+            checked={currentTask.select}
+            onChange={() => {
+              const updatedTasks = actualTasks.map((task) =>
+                task.text === currentTask.text
+                  ? { ...task, select: !task.select }
+                  : task
+              );
+              setActualTasks(updatedTasks);
+              const updatedCurrent = updatedTasks.find(
+                (task) => task.text === currentTask.text
+              );
+              setCurrentTask(updatedCurrent);
+            }}
+          />
+        </Task>
+      )}
       <div className="tabs">
         <button
           className="tab showTask"
           onClick={() => {
-            task = getRandomTask();
-            setShowTask(task);
-            setHistoryDisplayTasks([...historyDisplayTasks, task]);
+            const task = getRandomTask();
+            setCurrentTask(task);
+            setShowTask(task.text);
+
+            setHistoryDisplayTasks([
+              ...historyDisplayTasks,
+              {
+                id: historyDisplayTasks.length + 1,
+                text: task.text,
+                select: task.select,
+              },
+            ]);
           }}
         >
           Сгенерировать случайное задание
@@ -62,21 +98,28 @@ export default function MainPage({
           }}
           type="text"
           placeholder="Введите задание"
-          value={newTask}
+          value={textTask}
           onChange={(evt) => {
-            setNewTask(evt.target.value);
+            setTextTask(evt.target.value);
           }}
         />
         <button
           className="addTaskButton"
           onClick={() => {
-            if (newTask.trim().length === 0) {
+            if (textTask.trim().length === 0) {
               alert("Ну-ка напиши что-нибудь");
             } else {
-              setActualTasks([...actualTasks, newTask]);
-              setAddedTasks([...addedTasks, newTask]);
-              setNewTask("");
+              setActualTasks([
+                ...actualTasks,
+                { id: actualTasks.length + 1, text: textTask, select: false },
+              ]);
+              setAddedTasks([
+                ...addedTasks,
+                { id: actualTasks.length + 1, text: textTask, select: false },
+              ]);
+              setTextTask("");
               setActiveModal(false);
+              console.log(actualTasks);
             }
           }}
         >

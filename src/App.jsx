@@ -5,18 +5,59 @@ import MainPage from "./pages/MainPage/MainPage";
 import { Route, Routes } from "react-router";
 import History from "./pages/History/History";
 import AddedTasks from "./pages/AddedTasks/AddedTasks";
+import Favorite from "./pages/Favorite/Favorite";
 
 const defaultTasks = [
-  "Сделай 10 отжиманий",
-  "Прочитай 5 страниц книги",
-  "Позвони другу",
-  "Выпей стакан воды",
-  "Сделай 20 приседаний",
-  "Выйди на улицу и прогуляйся 10 минут",
-  "Напиши список дел на завтра",
-  "Сделай зарядку для глаз",
-  "Прибери на рабочем столе",
-  "Послушай любимую песню",
+  {
+    id: 1,
+    text: "Сделай 10 отжиманий",
+    select: false,
+  },
+  {
+    id: 2,
+    text: "Прочитай 5 страниц книги",
+    select: true,
+  },
+  {
+    id: 3,
+    text: "Позвони другу",
+    select: false,
+  },
+  {
+    id: 4,
+    text: "Выпей стакан воды",
+    select: false,
+  },
+  {
+    id: 5,
+    text: "Сделай 20 приседаний",
+    select: false,
+  },
+  {
+    id: 6,
+    text: "Выйди на улицу и прогуляйся 10 минут",
+    select: false,
+  },
+  {
+    id: 7,
+    text: "Напиши список дел на завтра",
+    select: false,
+  },
+  {
+    id: 8,
+    text: "Сделай зарядку для глаз",
+    select: false,
+  },
+  {
+    id: 9,
+    text: "Прибери на рабочем столе",
+    select: false,
+  },
+  {
+    id: 10,
+    text: "Послушай любимую песню",
+    select: false,
+  },
 ];
 
 function App() {
@@ -29,7 +70,7 @@ function App() {
   const [historyDisplayTasks, setHistoryDisplayTasks] = useState(
     JSON.parse(localStorage.getItem("history")) || []
   );
-  const [newTask, setNewTask] = useState("");
+  const [textTask, setTextTask] = useState("");
 
   return (
     <div className="App">
@@ -41,8 +82,8 @@ function App() {
             <MainPage
               actualTasks={actualTasks}
               setActualTasks={setActualTasks}
-              newTask={newTask}
-              setNewTask={setNewTask}
+              textTask={textTask}
+              setTextTask={setTextTask}
               addedTasks={addedTasks}
               setAddedTasks={setAddedTasks}
               setHistoryDisplayTasks={setHistoryDisplayTasks}
@@ -51,7 +92,7 @@ function App() {
           }
         ></Route>
         <Route
-          path="/History"
+          path="/history"
           element={
             <History
               historyDisplayTasks={historyDisplayTasks}
@@ -63,6 +104,15 @@ function App() {
           path="/added_tasks"
           element={
             <AddedTasks addedTasks={addedTasks} setAddedTasks={setAddedTasks} />
+          }
+        ></Route>
+        <Route
+          path="/favorite_tasks"
+          element={
+            <Favorite
+              actualTasks={actualTasks}
+              setActualTasks={setActualTasks}
+            />
           }
         ></Route>
       </Routes>
